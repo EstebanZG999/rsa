@@ -2,12 +2,14 @@ from Crypto.PublicKey import RSA
 from Crypto.Cipher import PKCS1_OAEP
 
 def cifrar_con_rsa(mensaje: bytes, public_key_pem: bytes) -> bytes:
-    # TODO: implementar
-    pass
+    public_key = RSA.import_key(public_key_pem)
+    cipher = PKCS1_OAEP.new(public_key)
+    return cipher.encrypt(mensaje)
 
 def descifrar_con_rsa(cifrado: bytes, private_key_pem: bytes) -> bytes:
-    # TODO: implementar
-    pass
+    private_key = RSA.import_key(private_key_pem, passphrase="lab04uvg")
+    descipher = PKCS1_OAEP.new(private_key)
+    return descipher.decrypt(cifrado)
 
 if __name__ == '__main__':
     # Cargar claves generadas en el ejercicio anterior

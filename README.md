@@ -122,3 +122,14 @@ No es recomendable cifrar los documentos directamente con RSA ya que este algori
 Un archivo .pem contiene información criptográfica codificada en formato texto, tiene los datos binarios convertidos a base64 para que se puedan almacenar y compartir de una manera mas sencilla. Al abrir public_key.pem se ve la clave publica del RSA y los datos necesarios para cifrar información. Lo que mas destaca al abrir este archivo es su estructura, la cual esta delimitada por un encabezado y un pie de pagina, que indican el tipo de contenido, en este caso es el  -----BEGIN PUBLIC KEY----- y -----END PUBLIC KEY-----. Entre estas lineas podremos encontrar el contenido que está codificado en Base64. 
 
 ### 3. ¿Porqué cifrar el mismo mensaje dos veces produce resultados distintos? Demuéstrenlo y expliquen que propiedad de OAEP lo cause
+La razon por la cual se puede cifrar el mismo mensaje dos veces y que se produzcan resultados distintos es porque OAEP no es deterministico. Lo que hace OAEP es agregar un valor aleatorio al proceso de padding antes de que se cifre, esto causa que cada vez que se cifre el mismo mensaje tenga una representacion interna diferente. Esto hace que el ciphertext cambie en cada ejecución, aun cuando el texto plano y la clave publica sean los mismos. OAEP introduce un componente random que hace que el cifrado sea distinto cada vez, sin dañar la recuperacion del mensaje por medio de la clave privada. 
+
+```text
+Original  : b'El mensaje sera la clave secreta de AES'
+Cifrado   : 395a45b82b2f2d6b0cba88bae5e5da50067fa91450bec20cbd5a1452623b6c33...
+Descifrado: b'El mensaje sera la clave secreta de AES'
+
+c1 == c2: False
+```
+
+Al cifrar el mismo mensaje dos veces se puede observar que se obtuvo un resutlado diferente por medio de la comparacion entre c1 y c2.

@@ -118,8 +118,7 @@ python rsa_AES_GCM.py
 ### 1. ¿Explique por qué no cifrar el documento directamente con RSA?
 No es recomendable cifrar los documentos directamente con RSA ya que este algoritmo fue hecho para cifrar datos por pequeñas cantidades, no archivos grandes como los documentos en este caso. El cifrado RSA utiliza operaciones matematicas complejas lo cual hace que el proceso de cifrado sea computacionalmente costoso y lento cuando se aplica a grandes volumenes de datos. Asimismo, el RSA tiene un tamaño limite del mensaje que puede cifrar, esto vuelve impractico cifrar documentos completos como PDFs. 
 
-### 2. Estructura de un archivo PEM
+### 2. ¿Qué información contiene un archivo .pem? Abre public_key.pem con un editor de texto y describe su estructura.
+Un archivo .pem contiene información criptográfica codificada en formato texto, tiene los datos binarios convertidos a base64 para que se puedan almacenar y compartir de una manera mas sencilla. Al abrir public_key.pem se ve la clave publica del RSA y los datos necesarios para cifrar información. Lo que mas destaca al abrir este archivo es su estructura, la cual esta delimitada por un encabezado y un pie de pagina, que indican el tipo de contenido, en este caso es el  -----BEGIN PUBLIC KEY----- y -----END PUBLIC KEY-----. Entre estas lineas podremos encontrar el contenido que está codificado en Base64. 
 
-### 3. Por que RSA-OAEP produce resultados distintos al cifrar el mismo mensaje
-
-### 4. RSA en protocolos reales: TLS 1.3, certificados X.509 y SSH
+### 3. ¿Porqué cifrar el mismo mensaje dos veces produce resultados distintos? Demuéstrenlo y expliquen que propiedad de OAEP lo cause

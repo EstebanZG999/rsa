@@ -5,13 +5,40 @@ from generar_claves import generar_par_claves
 
 
 def encrypt_document(document: bytes, recipient_public_key_pem: bytes) -> bytes:
-    # 1. Cifrar el documento con AES-256-GCM
-    # 2. Cifrar la clave AES con la clave pública RSA (OAEP)
+    aes_key = os.urandom(32)
 
-    return True
+    cipher_doc = AES.new(aes_key, AES.MODE_GCM)
+    ciphertext, tag = cipher_doc.encrypt_and_digest(document)
+
+    nonce = cipher_doc.nonce
+
+    public_key = RSA.import_key(recipient_public_key_pem)
+    cipher_key = PKCS1_OAEP.new(public_key)
+
+    encrypted_aes_key = cipher_key.encrypt(aes_key)
+
+    package = encrypted_aes_key + nonce + tag + ciphertext
+
+    return package
+
 
 def decrypt_document(pkg: bytes, recipient_private_key_pem: bytes) -> bytes:
-    return True
+    encrypted_aes_key = pkg[:256]
+    nonce = pkg[256:272]
+    tag = pkg[272:288]
+    ciphertext = pkg[288:]
+
+    private_key = RSA.import_key(recipient_private_key_pem, passphrase="lab04uvg")
+
+    cipher_rsa = PKCS1_OAEP.new(private_key)
+
+    aes_key = cipher_rsa.decrypt(encrypted_aes_key)
+
+    cipher_aes = AES.new(aes_key, AES.MODE_GCM, nonce=nonce)
+
+    document = cipher_aes.decrypt_and_verify(ciphertext, tag)
+
+    return document
 
 if __name__ == '__main__':
     generar_par_claves(2048)

@@ -101,16 +101,34 @@ python rsa_AES_GCM.py
 python generar_claves.py
 ```
 
+```text
+Creacion de:
+- `private_key.pem`
+- `public_key.pem`
+```
+
 ### Ejemplo 2: cifrar un mensaje con RSA-OAEP
 
 ```bash
 python rsa_OAEP.py
 ```
 
+```text
+Original  : b'El mensaje sera la clave secreta de AES'
+Cifrado   : 251071f436d3256f8843d8b0bc7de23f88b192e8a9e095098bd020ca65de63e4...
+Descifrado: b'El mensaje sera la clave secreta de AES'
+
+c1 == c2: False
+```
+
 ### Ejemplo 3: cifrar un documento con RSA + AES-GCM
 
 ```bash
 python rsa_AES_GCM.py
+```
+
+```text
+Archivo 1 MB: OK
 ```
 
 ## Preguntas de analisis
